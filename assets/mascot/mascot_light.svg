@@ -1,0 +1,13 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body -->
+  <circle cx="64" cy="74" r="44" fill="#FFE7D1" stroke="#D36C3D" stroke-width="4"/>
+  <!-- Fedora -->
+  <path d="M24 44H104V50H24V44Z" fill="#5D4037"/>
+  <path d="M44 20H84V44H44V20Z" fill="#5D4037"/>
+  <path d="M44 38H84V41H44V38Z" fill="#3E2723"/>
+  <!-- Eye Sockets -->
+  <circle cx="46" cy="74" r="14" fill="white" stroke="#D36C3D" stroke-width="2"/>
+  <circle cx="82" cy="74" r="14" fill="white" stroke="#D36C3D" stroke-width="2"/>
+  <!-- Mouth -->
+  <path d="M58 94C58 94 62 98 64 98C66 98 70 94 70 94" stroke="#D36C3D" stroke-width="2" stroke-linecap="round"/>
+</svg>

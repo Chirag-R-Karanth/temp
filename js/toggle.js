@@ -1,64 +1,40 @@
-// toggle.js
+// js/toggle.js
 
 const lightToDarkMap = {
     'index.html': 'blacklight.html',
-    'skills.html': 'sports.html',
-    'projects.html': 'cooking.html',
-    'resume.html': 'photography.html',
-    'finance.html': 'blog.html',
-    'contact.html': 'contact.html'
+    'skills.html': 'bl_skills.html',
+    'projects.html': 'bl_projects.html', // Wait, I didn't see projects in the list but it was in the code
+    'resume.html': 'bl_resume.html',
+    'finance.html': 'bl_finance.html',
+    'contact.html': 'bl_contact.html',
+    'blog.html': 'bl_blog.html',
+    'photography.html': 'bl_photography.html',
+    'cooking.html': 'bl_cooking.html',
+    'sports.html': 'bl_sports.html'
 };
 
 const darkToLightMap = {
     'blacklight.html': 'index.html',
-    'sports.html': 'skills.html',
-    'cooking.html': 'projects.html',
-    'photography.html': 'resume.html',
-    'blog.html': 'finance.html',
-    'doodles.html': 'index.html',
-    'contact.html': 'contact.html'
+    'bl_skills.html': 'skills.html',
+    'bl_projects.html': 'projects.html',
+    'bl_resume.html': 'resume.html',
+    'bl_finance.html': 'finance.html',
+    'bl_contact.html': 'contact.html',
+    'bl_blog.html': 'blog.html',
+    'bl_photography.html': 'photography.html',
+    'bl_cooking.html': 'cooking.html',
+    'bl_sports.html': 'sports.html',
+    'bl_doodles.html': 'blacklight.html'
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    const avatarContainer = document.getElementById('avatar-container');
-    if (!avatarContainer) return;
+    const mascot = document.querySelector('.mascot');
+    if (!mascot) return;
 
     // Determine current side
     const isDark = document.body.classList.contains('dark-side');
-    
-    // Set SVG as an img tag
-    const svgPath = isDark ? 'assets/avatar_dark.svg' : 'assets/avatar_light.svg';
-    avatarContainer.innerHTML = `<img src="${svgPath}" alt="Avatar Toggle" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none; transition: transform 0.1s ease-out;" id="avatar-img">`;
 
-    // Eye-tracking and head-tilt (Parallax effect)
-    document.addEventListener('mousemove', (e) => {
-        const rect = avatarContainer.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        
-        const deltaX = e.clientX - centerX;
-        const deltaY = e.clientY - centerY;
-        
-        // Calculate tilt angles based on distance from center
-        const maxTilt = 20; // Maximum rotation in degrees
-        const tiltX = Math.max(Math.min(-(deltaY / window.innerHeight) * maxTilt * 2, maxTilt), -maxTilt);
-        const tiltY = Math.max(Math.min((deltaX / window.innerWidth) * maxTilt * 2, maxTilt), -maxTilt);
-        
-        const img = document.getElementById('avatar-img');
-        if (img) {
-            img.style.transform = `perspective(500px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.1)`;
-        }
-    });
-
-    // Reset tilt on mouse leave window
-    document.addEventListener('mouseleave', () => {
-        const img = document.getElementById('avatar-img');
-        if (img) {
-            img.style.transform = `perspective(500px) rotateX(0deg) rotateY(0deg) scale(1)`;
-        }
-    });
-
-    avatarContainer.addEventListener('click', () => {
+    mascot.addEventListener('click', () => {
         let currentPath = window.location.pathname.split('/').pop();
         if (!currentPath) currentPath = 'index.html'; // Default
 

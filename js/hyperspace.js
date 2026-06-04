@@ -1,23 +1,21 @@
-// hyperspace.js
+// js/hyperspace.js
 
 window.hyperspaceJump = function(targetUrl) {
-    // Create canvas
-    const canvas = document.createElement('canvas');
-    canvas.id = 'hyperspace-canvas';
-    document.body.appendChild(canvas);
+    // Create canvas if it doesn't exist
+    let canvas = document.getElementById('hyperspace-canvas');
+    if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.id = 'hyperspace-canvas';
+        document.body.appendChild(canvas);
+    }
     
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
-    // Fade in canvas
-    setTimeout(() => {
-        canvas.style.opacity = '1';
-        canvas.style.backgroundColor = '#000';
-    }, 10);
-
+    // Animation state
     const stars = [];
-    const numStars = 400;
+    const numStars = 500;
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
 
@@ -34,18 +32,33 @@ window.hyperspaceJump = function(targetUrl) {
     let speed = 2;
     let warp = false;
     let startTime = performance.now();
-    const duration = 1000; // 1 second
+    const duration = 1200; // ~1.2 seconds
+
+    // Initial dimming
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0,0,0,0)';
+    overlay.style.zIndex = '9998';
+    overlay.style.pointerEvents = 'none';
+    overlay.style.transition = 'background-color 0.4s ease';
+    document.body.appendChild(overlay);
+
+    setTimeout(() => {
+        overlay.style.backgroundColor = 'rgba(0,0,0,0.7)';
+        canvas.style.opacity = '1';
+    }, 10);
 
     function animate(time) {
-        // Create trailing effect by drawing semi-transparent black
-        ctx.fillStyle = warp ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.8)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
         const elapsed = time - startTime;
 
-        if (elapsed > 400) {
+        // Sequence steps
+        if (elapsed > 300) {
             warp = true;
-            speed += 1.5;
+            speed += 2;
         }
 
         if (elapsed > duration) {
@@ -53,6 +66,10 @@ window.hyperspaceJump = function(targetUrl) {
             window.location.href = targetUrl;
             return;
         }
+
+        // Clear with slight trail
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         for (let i = 0; i < numStars; i++) {
             let star = stars[i];
@@ -62,7 +79,7 @@ window.hyperspaceJump = function(targetUrl) {
                 star.z = canvas.width;
                 star.x = Math.random() * canvas.width - centerX;
                 star.y = Math.random() * canvas.height - centerY;
-                star.pz = canvas.width; // Reset pz to prevent drawing lines across the screen when wrapping
+                star.pz = canvas.width;
             }
 
             const sx = star.x / star.z * canvas.width + centerX;
@@ -73,28 +90,31 @@ window.hyperspaceJump = function(targetUrl) {
 
             star.pz = star.z;
 
-            // Draw streak
             ctx.beginPath();
             ctx.moveTo(px, py);
             ctx.lineTo(sx, sy);
             
-            // Add gradient/glow based on warp speed
-            ctx.lineWidth = warp ? 4 : 2;
+            ctx.lineWidth = warp ? 3 : 1;
             ctx.lineCap = "round";
             
             const intensity = Math.min(255, 255 - (star.z / canvas.width) * 255);
-            // Alternate colors slightly for visual richness (blueish to whitish)
-            const r = i % 3 === 0 ? 255 : intensity;
-            const g = i % 2 === 0 ? 255 : intensity;
-            
-            ctx.strokeStyle = `rgba(${r}, ${g}, 255, ${intensity / 255})`;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${intensity / 255})`;
             ctx.stroke();
         }
         
-        // Final flash effect right before transition
-        if (elapsed > duration - 200) {
-            const flashAlpha = Math.min(1, (elapsed - (duration - 200)) / 200);
-            ctx.fillStyle = `rgba(255, 255, 255, ${flashAlpha})`;
+        // Radial Flash
+        if (elapsed > duration - 400) {
+            const flashAlpha = Math.min(1, (elapsed - (duration - 400)) / 200);
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, canvas.width);
+            gradient.addColorStop(0, `rgba(255, 255, 255, ${flashAlpha})`);
+            gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Final screen turn black
+        if (elapsed > duration - 100) {
+            ctx.fillStyle = 'black';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
         
