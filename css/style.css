@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
 
 :root {
-    --bg: #F8F5F2;
+    --bg: #FFE7D1; /* Background: #FFE7D1 as requested */
     --text: #2D2D2D;
     --text-muted: #666;
     --accent: #D36C3D;
@@ -32,6 +32,7 @@ nav {
 nav a {
     color: var(--text-muted);
     font-weight: 600;
+    transition: color 0.2s;
 }
 
 nav a:hover, nav a.active {
@@ -63,49 +64,26 @@ nav a:hover, nav a.active {
 }
 
 h1 {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text);
 }
 
 .bio {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     color: var(--text-muted);
     margin-bottom: 2rem;
     max-width: 600px;
 }
 
-.hero-image {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-}
-
-.photo-placeholder {
+.profile-photo {
     width: 300px;
     height: 400px;
-    background-color: #e6ceb8;
-    border-radius: 8px;
+    object-fit: cover;
+    border-radius: 16px;
     box-shadow: var(--shadow);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-muted);
-    font-style: italic;
-    position: relative;
-    overflow: hidden;
-}
-
-.photo-placeholder::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
 }
 
 /* Sections */
@@ -139,18 +117,16 @@ h2::after {
 
 .card {
     background-color: var(--card-bg);
-    padding: 2.5rem;
+    padding: 2rem;
     border-radius: 16px;
     box-shadow: var(--shadow);
     border: var(--glass-border);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 16px 40px rgba(211, 108, 61, 0.15);
+    transform: translateY(-5px);
 }
 
 .card h3 {
@@ -158,38 +134,37 @@ h2::after {
     color: var(--accent);
 }
 
-.card p {
-    color: var(--text-muted);
-    margin-bottom: 1.5rem;
-}
-
 .btn {
     display: inline-block;
     padding: 0.75rem 2rem;
     background-color: var(--text);
-    color: var(--bg);
+    color: #fff;
     border-radius: 30px;
     font-weight: 600;
-    letter-spacing: 0.5px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .btn:hover {
     background-color: var(--accent);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(211, 108, 61, 0.3);
+    box-shadow: 0 4px 15px rgba(211, 108, 61, 0.3);
 }
 
-/* Footer / Contact */
+/* Footer */
+footer {
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
 .contact-links a {
     border: 1px solid var(--accent);
     color: var(--accent);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
 }
 
 .contact-links a:hover {
     background-color: var(--accent);
-    color: var(--bg);
+    color: #fff;
 }
 
 /* Responsive */
@@ -198,12 +173,15 @@ h2::after {
         flex-direction: column;
         text-align: center;
         gap: 2rem;
+        margin: 2rem 0;
     }
-    .bio {
-        margin: 0 auto 2rem auto;
+    h1 {
+        font-size: 2.5rem;
     }
-    h2::after {
-        left: 50%;
-        transform: translateX(-50%);
+    .profile-photo {
+        width: 100%;
+        max-width: 280px;
+        height: auto;
+        aspect-ratio: 3/4;
     }
 }
